@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.TestDriveMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.TestDrive">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="booking_date" jdbcType="TIMESTAMP" property="bookingDate" />
+    <result column="dealer_id" jdbcType="BIGINT" property="dealerId" />
+    <result column="car_id" jdbcType="BIGINT" property="carId" />
+    <result column="crm_id" jdbcType="VARCHAR" property="crmId" />
+    <result column="crm_status" jdbcType="INTEGER" property="crmStatus" />
+    <result column="crm_drive_date" jdbcType="TIMESTAMP" property="crmDriveDate" />
+    <result column="invite_user_id" jdbcType="BIGINT" property="inviteUserId" />
+    <result column="invite_status" jdbcType="INTEGER" property="inviteStatus" />
+    <result column="invite_fail_reason" jdbcType="VARCHAR" property="inviteFailReason" />
+    <result column="manuel_edit_drive_status" jdbcType="BIT" property="manuelEditDriveStatus" />
+    <result column="event_id" jdbcType="BIGINT" property="eventId" />
+    <result column="reward_collect_status" jdbcType="BIT" property="rewardCollectStatus" />
+    <result column="count_invite_status" jdbcType="BIT" property="countInviteStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, name, mobile, booking_date, dealer_id, car_id, crm_id, crm_status, crm_drive_date, 
+    invite_user_id, invite_status, invite_fail_reason, manuel_edit_drive_status, event_id, 
+    reward_collect_status, count_invite_status
+  </sql>
+  <select id="selectByExample" parameterType="com.example.demo.model.TestDriveExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from test_drive
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from test_drive
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from test_drive
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.demo.model.TestDriveExample">
+    delete from test_drive
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.model.TestDrive">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into test_drive (user_id, name, mobile, 
+      booking_date, dealer_id, car_id, 
+      crm_id, crm_status, crm_drive_date, 
+      invite_user_id, invite_status, invite_fail_reason, 
+      manuel_edit_drive_status, event_id, reward_collect_status, 
+      count_invite_status)
+    values (#{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{bookingDate,jdbcType=TIMESTAMP}, #{dealerId,jdbcType=BIGINT}, #{carId,jdbcType=BIGINT}, 
+      #{crmId,jdbcType=VARCHAR}, #{crmStatus,jdbcType=INTEGER}, #{crmDriveDate,jdbcType=TIMESTAMP}, 
+      #{inviteUserId,jdbcType=BIGINT}, #{inviteStatus,jdbcType=INTEGER}, #{inviteFailReason,jdbcType=VARCHAR}, 
+      #{manuelEditDriveStatus,jdbcType=BIT}, #{eventId,jdbcType=BIGINT}, #{rewardCollectStatus,jdbcType=BIT}, 
+      #{countInviteStatus,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.TestDrive">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into test_drive
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="bookingDate != null">
+        booking_date,
+      </if>
+      <if test="dealerId != null">
+        dealer_id,
+      </if>
+      <if test="carId != null">
+        car_id,
+      </if>
+      <if test="crmId != null">
+        crm_id,
+      </if>
+      <if test="crmStatus != null">
+        crm_status,
+      </if>
+      <if test="crmDriveDate != null">
+        crm_drive_date,
+      </if>
+      <if test="inviteUserId != null">
+        invite_user_id,
+      </if>
+      <if test="inviteStatus != null">
+        invite_status,
+      </if>
+      <if test="inviteFailReason != null">
+        invite_fail_reason,
+      </if>
+      <if test="manuelEditDriveStatus != null">
+        manuel_edit_drive_status,
+      </if>
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="rewardCollectStatus != null">
+        reward_collect_status,
+      </if>
+      <if test="countInviteStatus != null">
+        count_invite_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="bookingDate != null">
+        #{bookingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealerId != null">
+        #{dealerId,jdbcType=BIGINT},
+      </if>
+      <if test="carId != null">
+        #{carId,jdbcType=BIGINT},
+      </if>
+      <if test="crmId != null">
+        #{crmId,jdbcType=VARCHAR},
+      </if>
+      <if test="crmStatus != null">
+        #{crmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="crmDriveDate != null">
+        #{crmDriveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inviteUserId != null">
+        #{inviteUserId,jdbcType=BIGINT},
+      </if>
+      <if test="inviteStatus != null">
+        #{inviteStatus,jdbcType=INTEGER},
+      </if>
+      <if test="inviteFailReason != null">
+        #{inviteFailReason,jdbcType=VARCHAR},
+      </if>
+      <if test="manuelEditDriveStatus != null">
+        #{manuelEditDriveStatus,jdbcType=BIT},
+      </if>
+      <if test="eventId != null">
+        #{eventId,jdbcType=BIGINT},
+      </if>
+      <if test="rewardCollectStatus != null">
+        #{rewardCollectStatus,jdbcType=BIT},
+      </if>
+      <if test="countInviteStatus != null">
+        #{countInviteStatus,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.demo.model.TestDriveExample" resultType="java.lang.Long">
+    select count(*) from test_drive
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update test_drive
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookingDate != null">
+        booking_date = #{record.bookingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dealerId != null">
+        dealer_id = #{record.dealerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.carId != null">
+        car_id = #{record.carId,jdbcType=BIGINT},
+      </if>
+      <if test="record.crmId != null">
+        crm_id = #{record.crmId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.crmStatus != null">
+        crm_status = #{record.crmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.crmDriveDate != null">
+        crm_drive_date = #{record.crmDriveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.inviteUserId != null">
+        invite_user_id = #{record.inviteUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.inviteStatus != null">
+        invite_status = #{record.inviteStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.inviteFailReason != null">
+        invite_fail_reason = #{record.inviteFailReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manuelEditDriveStatus != null">
+        manuel_edit_drive_status = #{record.manuelEditDriveStatus,jdbcType=BIT},
+      </if>
+      <if test="record.eventId != null">
+        event_id = #{record.eventId,jdbcType=BIGINT},
+      </if>
+      <if test="record.rewardCollectStatus != null">
+        reward_collect_status = #{record.rewardCollectStatus,jdbcType=BIT},
+      </if>
+      <if test="record.countInviteStatus != null">
+        count_invite_status = #{record.countInviteStatus,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update test_drive
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      booking_date = #{record.bookingDate,jdbcType=TIMESTAMP},
+      dealer_id = #{record.dealerId,jdbcType=BIGINT},
+      car_id = #{record.carId,jdbcType=BIGINT},
+      crm_id = #{record.crmId,jdbcType=VARCHAR},
+      crm_status = #{record.crmStatus,jdbcType=INTEGER},
+      crm_drive_date = #{record.crmDriveDate,jdbcType=TIMESTAMP},
+      invite_user_id = #{record.inviteUserId,jdbcType=BIGINT},
+      invite_status = #{record.inviteStatus,jdbcType=INTEGER},
+      invite_fail_reason = #{record.inviteFailReason,jdbcType=VARCHAR},
+      manuel_edit_drive_status = #{record.manuelEditDriveStatus,jdbcType=BIT},
+      event_id = #{record.eventId,jdbcType=BIGINT},
+      reward_collect_status = #{record.rewardCollectStatus,jdbcType=BIT},
+      count_invite_status = #{record.countInviteStatus,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.model.TestDrive">
+    update test_drive
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="bookingDate != null">
+        booking_date = #{bookingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealerId != null">
+        dealer_id = #{dealerId,jdbcType=BIGINT},
+      </if>
+      <if test="carId != null">
+        car_id = #{carId,jdbcType=BIGINT},
+      </if>
+      <if test="crmId != null">
+        crm_id = #{crmId,jdbcType=VARCHAR},
+      </if>
+      <if test="crmStatus != null">
+        crm_status = #{crmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="crmDriveDate != null">
+        crm_drive_date = #{crmDriveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inviteUserId != null">
+        invite_user_id = #{inviteUserId,jdbcType=BIGINT},
+      </if>
+      <if test="inviteStatus != null">
+        invite_status = #{inviteStatus,jdbcType=INTEGER},
+      </if>
+      <if test="inviteFailReason != null">
+        invite_fail_reason = #{inviteFailReason,jdbcType=VARCHAR},
+      </if>
+      <if test="manuelEditDriveStatus != null">
+        manuel_edit_drive_status = #{manuelEditDriveStatus,jdbcType=BIT},
+      </if>
+      <if test="eventId != null">
+        event_id = #{eventId,jdbcType=BIGINT},
+      </if>
+      <if test="rewardCollectStatus != null">
+        reward_collect_status = #{rewardCollectStatus,jdbcType=BIT},
+      </if>
+      <if test="countInviteStatus != null">
+        count_invite_status = #{countInviteStatus,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.model.TestDrive">
+    update test_drive
+    set user_id = #{userId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      booking_date = #{bookingDate,jdbcType=TIMESTAMP},
+      dealer_id = #{dealerId,jdbcType=BIGINT},
+      car_id = #{carId,jdbcType=BIGINT},
+      crm_id = #{crmId,jdbcType=VARCHAR},
+      crm_status = #{crmStatus,jdbcType=INTEGER},
+      crm_drive_date = #{crmDriveDate,jdbcType=TIMESTAMP},
+      invite_user_id = #{inviteUserId,jdbcType=BIGINT},
+      invite_status = #{inviteStatus,jdbcType=INTEGER},
+      invite_fail_reason = #{inviteFailReason,jdbcType=VARCHAR},
+      manuel_edit_drive_status = #{manuelEditDriveStatus,jdbcType=BIT},
+      event_id = #{eventId,jdbcType=BIGINT},
+      reward_collect_status = #{rewardCollectStatus,jdbcType=BIT},
+      count_invite_status = #{countInviteStatus,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

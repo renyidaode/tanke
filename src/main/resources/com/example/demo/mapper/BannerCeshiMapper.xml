@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.BannerCeshiMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.BannerCeshi">
+    <id column="banner_id" jdbcType="INTEGER" property="bannerId" />
+    <result column="banner_title" jdbcType="VARCHAR" property="bannerTitle" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="banner_type" jdbcType="INTEGER" property="bannerType" />
+    <result column="banner_status" jdbcType="BIT" property="bannerStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="active_time" jdbcType="TIMESTAMP" property="activeTime" />
+    <result column="deactive_time" jdbcType="TIMESTAMP" property="deactiveTime" />
+    <result column="eventstart_time" jdbcType="TIMESTAMP" property="eventstartTime" />
+    <result column="eventend_time" jdbcType="TIMESTAMP" property="eventendTime" />
+    <result column="show_order" jdbcType="INTEGER" property="showOrder" />
+    <result column="http_url" jdbcType="VARCHAR" property="httpUrl" />
+    <result column="clicks_pv" jdbcType="INTEGER" property="clicksPv" />
+    <result column="clicks_uv" jdbcType="INTEGER" property="clicksUv" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    banner_id, banner_title, image_url, banner_type, banner_status, create_time, update_time, 
+    active_time, deactive_time, eventstart_time, eventend_time, show_order, http_url, 
+    clicks_pv, clicks_uv
+  </sql>
+  <select id="selectByExample" parameterType="com.example.demo.model.BannerCeshiExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from banner_ceshi
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from banner_ceshi
+    where banner_id = #{bannerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from banner_ceshi
+    where banner_id = #{bannerId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.demo.model.BannerCeshiExample">
+    delete from banner_ceshi
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.model.BannerCeshi">
+    insert into banner_ceshi (banner_id, banner_title, image_url, 
+      banner_type, banner_status, create_time, 
+      update_time, active_time, deactive_time, 
+      eventstart_time, eventend_time, show_order, 
+      http_url, clicks_pv, clicks_uv
+      )
+    values (#{bannerId,jdbcType=INTEGER}, #{bannerTitle,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}, 
+      #{bannerType,jdbcType=INTEGER}, #{bannerStatus,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{activeTime,jdbcType=TIMESTAMP}, #{deactiveTime,jdbcType=TIMESTAMP}, 
+      #{eventstartTime,jdbcType=TIMESTAMP}, #{eventendTime,jdbcType=TIMESTAMP}, #{showOrder,jdbcType=INTEGER}, 
+      #{httpUrl,jdbcType=VARCHAR}, #{clicksPv,jdbcType=INTEGER}, #{clicksUv,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.BannerCeshi">
+    insert into banner_ceshi
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bannerId != null">
+        banner_id,
+      </if>
+      <if test="bannerTitle != null">
+        banner_title,
+      </if>
+      <if test="imageUrl != null">
+        image_url,
+      </if>
+      <if test="bannerType != null">
+        banner_type,
+      </if>
+      <if test="bannerStatus != null">
+        banner_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="activeTime != null">
+        active_time,
+      </if>
+      <if test="deactiveTime != null">
+        deactive_time,
+      </if>
+      <if test="eventstartTime != null">
+        eventstart_time,
+      </if>
+      <if test="eventendTime != null">
+        eventend_time,
+      </if>
+      <if test="showOrder != null">
+        show_order,
+      </if>
+      <if test="httpUrl != null">
+        http_url,
+      </if>
+      <if test="clicksPv != null">
+        clicks_pv,
+      </if>
+      <if test="clicksUv != null">
+        clicks_uv,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bannerId != null">
+        #{bannerId,jdbcType=INTEGER},
+      </if>
+      <if test="bannerTitle != null">
+        #{bannerTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerType != null">
+        #{bannerType,jdbcType=INTEGER},
+      </if>
+      <if test="bannerStatus != null">
+        #{bannerStatus,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeTime != null">
+        #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deactiveTime != null">
+        #{deactiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eventstartTime != null">
+        #{eventstartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eventendTime != null">
+        #{eventendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="showOrder != null">
+        #{showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="httpUrl != null">
+        #{httpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="clicksPv != null">
+        #{clicksPv,jdbcType=INTEGER},
+      </if>
+      <if test="clicksUv != null">
+        #{clicksUv,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.demo.model.BannerCeshiExample" resultType="java.lang.Long">
+    select count(*) from banner_ceshi
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update banner_ceshi
+    <set>
+      <if test="record.bannerId != null">
+        banner_id = #{record.bannerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bannerTitle != null">
+        banner_title = #{record.bannerTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imageUrl != null">
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bannerType != null">
+        banner_type = #{record.bannerType,jdbcType=INTEGER},
+      </if>
+      <if test="record.bannerStatus != null">
+        banner_status = #{record.bannerStatus,jdbcType=BIT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.activeTime != null">
+        active_time = #{record.activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deactiveTime != null">
+        deactive_time = #{record.deactiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.eventstartTime != null">
+        eventstart_time = #{record.eventstartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.eventendTime != null">
+        eventend_time = #{record.eventendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.showOrder != null">
+        show_order = #{record.showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.httpUrl != null">
+        http_url = #{record.httpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clicksPv != null">
+        clicks_pv = #{record.clicksPv,jdbcType=INTEGER},
+      </if>
+      <if test="record.clicksUv != null">
+        clicks_uv = #{record.clicksUv,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update banner_ceshi
+    set banner_id = #{record.bannerId,jdbcType=INTEGER},
+      banner_title = #{record.bannerTitle,jdbcType=VARCHAR},
+      image_url = #{record.imageUrl,jdbcType=VARCHAR},
+      banner_type = #{record.bannerType,jdbcType=INTEGER},
+      banner_status = #{record.bannerStatus,jdbcType=BIT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      active_time = #{record.activeTime,jdbcType=TIMESTAMP},
+      deactive_time = #{record.deactiveTime,jdbcType=TIMESTAMP},
+      eventstart_time = #{record.eventstartTime,jdbcType=TIMESTAMP},
+      eventend_time = #{record.eventendTime,jdbcType=TIMESTAMP},
+      show_order = #{record.showOrder,jdbcType=INTEGER},
+      http_url = #{record.httpUrl,jdbcType=VARCHAR},
+      clicks_pv = #{record.clicksPv,jdbcType=INTEGER},
+      clicks_uv = #{record.clicksUv,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.model.BannerCeshi">
+    update banner_ceshi
+    <set>
+      <if test="bannerTitle != null">
+        banner_title = #{bannerTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerType != null">
+        banner_type = #{bannerType,jdbcType=INTEGER},
+      </if>
+      <if test="bannerStatus != null">
+        banner_status = #{bannerStatus,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeTime != null">
+        active_time = #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deactiveTime != null">
+        deactive_time = #{deactiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eventstartTime != null">
+        eventstart_time = #{eventstartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eventendTime != null">
+        eventend_time = #{eventendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="showOrder != null">
+        show_order = #{showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="httpUrl != null">
+        http_url = #{httpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="clicksPv != null">
+        clicks_pv = #{clicksPv,jdbcType=INTEGER},
+      </if>
+      <if test="clicksUv != null">
+        clicks_uv = #{clicksUv,jdbcType=INTEGER},
+      </if>
+    </set>
+    where banner_id = #{bannerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.model.BannerCeshi">
+    update banner_ceshi
+    set banner_title = #{bannerTitle,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
+      banner_type = #{bannerType,jdbcType=INTEGER},
+      banner_status = #{bannerStatus,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      active_time = #{activeTime,jdbcType=TIMESTAMP},
+      deactive_time = #{deactiveTime,jdbcType=TIMESTAMP},
+      eventstart_time = #{eventstartTime,jdbcType=TIMESTAMP},
+      eventend_time = #{eventendTime,jdbcType=TIMESTAMP},
+      show_order = #{showOrder,jdbcType=INTEGER},
+      http_url = #{httpUrl,jdbcType=VARCHAR},
+      clicks_pv = #{clicksPv,jdbcType=INTEGER},
+      clicks_uv = #{clicksUv,jdbcType=INTEGER}
+    where banner_id = #{bannerId,jdbcType=INTEGER}
+  </update>
+</mapper>

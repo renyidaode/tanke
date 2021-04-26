@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.BannerMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.Banner">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="http_url" jdbcType="VARCHAR" property="httpUrl" />
+    <result column="event_id" jdbcType="BIGINT" property="eventId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="show_order" jdbcType="INTEGER" property="showOrder" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="active_status" jdbcType="BIT" property="activeStatus" />
+    <result column="active_time" jdbcType="TIMESTAMP" property="activeTime" />
+    <result column="deactive_time" jdbcType="TIMESTAMP" property="deactiveTime" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="timed_active_time" jdbcType="TIMESTAMP" property="timedActiveTime" />
+    <result column="timed_deactive_time" jdbcType="TIMESTAMP" property="timedDeactiveTime" />
+    <result column="deleted_status" jdbcType="BIT" property="deletedStatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.example.demo.model.Banner">
+    <result column="graphic" jdbcType="LONGVARCHAR" property="graphic" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, image_url, http_url, event_id, type, show_order, create_time, active_status, 
+    active_time, deactive_time, title, timed_active_time, timed_deactive_time, deleted_status
+  </sql>
+  <sql id="Blob_Column_List">
+    graphic
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.example.demo.model.BannerExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.example.demo.model.BannerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from banner
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from banner
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.demo.model.BannerExample">
+    delete from banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.model.Banner">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into banner (image_url, http_url, event_id, 
+      type, show_order, create_time, 
+      active_status, active_time, deactive_time, 
+      title, timed_active_time, timed_deactive_time, 
+      deleted_status, graphic)
+    values (#{imageUrl,jdbcType=VARCHAR}, #{httpUrl,jdbcType=VARCHAR}, #{eventId,jdbcType=BIGINT}, 
+      #{type,jdbcType=INTEGER}, #{showOrder,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{activeStatus,jdbcType=BIT}, #{activeTime,jdbcType=TIMESTAMP}, #{deactiveTime,jdbcType=TIMESTAMP}, 
+      #{title,jdbcType=VARCHAR}, #{timedActiveTime,jdbcType=TIMESTAMP}, #{timedDeactiveTime,jdbcType=TIMESTAMP}, 
+      #{deletedStatus,jdbcType=BIT}, #{graphic,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.Banner">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into banner
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="imageUrl != null">
+        image_url,
+      </if>
+      <if test="httpUrl != null">
+        http_url,
+      </if>
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="showOrder != null">
+        show_order,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="activeStatus != null">
+        active_status,
+      </if>
+      <if test="activeTime != null">
+        active_time,
+      </if>
+      <if test="deactiveTime != null">
+        deactive_time,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="timedActiveTime != null">
+        timed_active_time,
+      </if>
+      <if test="timedDeactiveTime != null">
+        timed_deactive_time,
+      </if>
+      <if test="deletedStatus != null">
+        deleted_status,
+      </if>
+      <if test="graphic != null">
+        graphic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="httpUrl != null">
+        #{httpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="eventId != null">
+        #{eventId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="showOrder != null">
+        #{showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeStatus != null">
+        #{activeStatus,jdbcType=BIT},
+      </if>
+      <if test="activeTime != null">
+        #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deactiveTime != null">
+        #{deactiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="timedActiveTime != null">
+        #{timedActiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timedDeactiveTime != null">
+        #{timedDeactiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletedStatus != null">
+        #{deletedStatus,jdbcType=BIT},
+      </if>
+      <if test="graphic != null">
+        #{graphic,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.demo.model.BannerExample" resultType="java.lang.Long">
+    select count(*) from banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update banner
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.imageUrl != null">
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.httpUrl != null">
+        http_url = #{record.httpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eventId != null">
+        event_id = #{record.eventId,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.showOrder != null">
+        show_order = #{record.showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.activeStatus != null">
+        active_status = #{record.activeStatus,jdbcType=BIT},
+      </if>
+      <if test="record.activeTime != null">
+        active_time = #{record.activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deactiveTime != null">
+        deactive_time = #{record.deactiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timedActiveTime != null">
+        timed_active_time = #{record.timedActiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.timedDeactiveTime != null">
+        timed_deactive_time = #{record.timedDeactiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deletedStatus != null">
+        deleted_status = #{record.deletedStatus,jdbcType=BIT},
+      </if>
+      <if test="record.graphic != null">
+        graphic = #{record.graphic,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update banner
+    set id = #{record.id,jdbcType=BIGINT},
+      image_url = #{record.imageUrl,jdbcType=VARCHAR},
+      http_url = #{record.httpUrl,jdbcType=VARCHAR},
+      event_id = #{record.eventId,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=INTEGER},
+      show_order = #{record.showOrder,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      active_status = #{record.activeStatus,jdbcType=BIT},
+      active_time = #{record.activeTime,jdbcType=TIMESTAMP},
+      deactive_time = #{record.deactiveTime,jdbcType=TIMESTAMP},
+      title = #{record.title,jdbcType=VARCHAR},
+      timed_active_time = #{record.timedActiveTime,jdbcType=TIMESTAMP},
+      timed_deactive_time = #{record.timedDeactiveTime,jdbcType=TIMESTAMP},
+      deleted_status = #{record.deletedStatus,jdbcType=BIT},
+      graphic = #{record.graphic,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update banner
+    set id = #{record.id,jdbcType=BIGINT},
+      image_url = #{record.imageUrl,jdbcType=VARCHAR},
+      http_url = #{record.httpUrl,jdbcType=VARCHAR},
+      event_id = #{record.eventId,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=INTEGER},
+      show_order = #{record.showOrder,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      active_status = #{record.activeStatus,jdbcType=BIT},
+      active_time = #{record.activeTime,jdbcType=TIMESTAMP},
+      deactive_time = #{record.deactiveTime,jdbcType=TIMESTAMP},
+      title = #{record.title,jdbcType=VARCHAR},
+      timed_active_time = #{record.timedActiveTime,jdbcType=TIMESTAMP},
+      timed_deactive_time = #{record.timedDeactiveTime,jdbcType=TIMESTAMP},
+      deleted_status = #{record.deletedStatus,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.model.Banner">
+    update banner
+    <set>
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="httpUrl != null">
+        http_url = #{httpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="eventId != null">
+        event_id = #{eventId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="showOrder != null">
+        show_order = #{showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeStatus != null">
+        active_status = #{activeStatus,jdbcType=BIT},
+      </if>
+      <if test="activeTime != null">
+        active_time = #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deactiveTime != null">
+        deactive_time = #{deactiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="timedActiveTime != null">
+        timed_active_time = #{timedActiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timedDeactiveTime != null">
+        timed_deactive_time = #{timedDeactiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletedStatus != null">
+        deleted_status = #{deletedStatus,jdbcType=BIT},
+      </if>
+      <if test="graphic != null">
+        graphic = #{graphic,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.demo.model.Banner">
+    update banner
+    set image_url = #{imageUrl,jdbcType=VARCHAR},
+      http_url = #{httpUrl,jdbcType=VARCHAR},
+      event_id = #{eventId,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      show_order = #{showOrder,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      active_status = #{activeStatus,jdbcType=BIT},
+      active_time = #{activeTime,jdbcType=TIMESTAMP},
+      deactive_time = #{deactiveTime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      timed_active_time = #{timedActiveTime,jdbcType=TIMESTAMP},
+      timed_deactive_time = #{timedDeactiveTime,jdbcType=TIMESTAMP},
+      deleted_status = #{deletedStatus,jdbcType=BIT},
+      graphic = #{graphic,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.model.Banner">
+    update banner
+    set image_url = #{imageUrl,jdbcType=VARCHAR},
+      http_url = #{httpUrl,jdbcType=VARCHAR},
+      event_id = #{eventId,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      show_order = #{showOrder,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      active_status = #{activeStatus,jdbcType=BIT},
+      active_time = #{activeTime,jdbcType=TIMESTAMP},
+      deactive_time = #{deactiveTime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      timed_active_time = #{timedActiveTime,jdbcType=TIMESTAMP},
+      timed_deactive_time = #{timedDeactiveTime,jdbcType=TIMESTAMP},
+      deleted_status = #{deletedStatus,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

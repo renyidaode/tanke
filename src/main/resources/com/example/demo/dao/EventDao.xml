@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.EventDao">
+
+    <resultMap id="eventMap" type="com.example.demo.object.EventParam"
+               extends="com.example.demo.mapper.EventMapper.ResultMapWithBLOBs">
+        <collection property="cars" columnPrefix="car_"
+                resultMap="com.example.demo.mapper.CarMapper.BaseResultMap">
+        </collection>
+        <collection property="eventRewards" columnPrefix="eventReward_"
+                    resultMap="com.example.demo.mapper.EventRewardMapper.BaseResultMap">
+        </collection>
+    </resultMap>
+
+
+
+    <select id="queryEventList" resultMap="eventMap">
+        SELECT event.*,
+
+        car.id car_id,
+        car.car_name car_car_name,
+        car.car_code car_car_code,
+        car.car_back_name car_car_back_name,
+        car.show_status car_show_status,
+        car.main_image_url car_main_image_url,
+        car.main_image_type car_main_image_type,
+        car.view_car_image_url car_view_car_image_url,
+        car.view_car_redirect_url car_view_car_redirect_url,
+        car.view_car_status car_view_car_status,
+        car.car_detail_image_url car_car_detail_image_url,
+
+        eventReward.id eventReward_id,
+        eventReward.invite_people_number eventReward_invite_people_number,
+        eventReward.name eventReward_name,
+        eventReward.stock eventReward_stock,
+        eventReward.image_url eventReward_image_url,
+        eventReward.event_id eventReward_event_id,
+        eventReward.deleted_status eventReward_deleted_status,
+
+        FROM event
+        <where>
+            deleted_status = 0
+            <if test="title != null and title != ''">
+                AND title like '%${title}%'
+            </if>
+            <if test="bannerStatus == 0">
+                AND (active_status = 0 AND deactive_time IS NULL)
+            </if>
+            <if test="bannerStatus == 1">
+                AND active_status = 1
+            </if>
+            <if test="bannerStatus == 2">
+                AND (active_status = 0 AND deactive_time IS NOT NULL)
+            </if>
+            <if test="activeTime != null">
+                AND active_time &gt;= #{activeTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="deactiveTime != null">
+                AND active_time &lt; #{deactiveTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY show_order IS NULL,show_order ASC,create_time DESC
+        Limit #{index},#{size}
+    </select>
+
+
+    <select id="queryEventListCount" resultType="java.lang.Long" >
+        select COUNT(1)
+        FROM banner
+        <where>
+            deleted_status = 0
+            <if test="title != null and title != ''">
+                AND title like '%${title}%'
+            </if>
+            <if test="bannerStatus == 0">
+                AND (active_status = 0 AND deactive_time IS NULL)
+            </if>
+            <if test="bannerStatus == 1">
+                AND active_status = 1
+            </if>
+            <if test="bannerStatus == 2">
+                AND (active_status = 0 AND deactive_time IS NOT NULL)
+            </if>
+            <if test="activeTime != null">
+                AND active_time &gt;= #{activeTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="deactiveTime != null">
+                AND active_time &lt; #{deactiveTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
+

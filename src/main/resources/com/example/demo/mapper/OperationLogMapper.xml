@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.OperationLogMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.model.OperationLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="operation_tag" jdbcType="VARCHAR" property="operationTag" />
+    <result column="operation_tag_id" jdbcType="BIGINT" property="operationTagId" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="operator_id" jdbcType="BIGINT" property="operatorId" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+    <result column="operate_type" jdbcType="INTEGER" property="operateType" />
+    <result column="operation_matter" jdbcType="VARCHAR" property="operationMatter" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.example.demo.model.OperationLog">
+    <result column="operation_content" jdbcType="LONGVARCHAR" property="operationContent" />
+    <result column="before_operation_data" jdbcType="LONGVARCHAR" property="beforeOperationData" />
+    <result column="after_operation_data" jdbcType="LONGVARCHAR" property="afterOperationData" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, operation_tag, operation_tag_id, operator, operator_id, operate_time, operate_type, 
+    operation_matter
+  </sql>
+  <sql id="Blob_Column_List">
+    operation_content, before_operation_data, after_operation_data
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.example.demo.model.OperationLogExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from operation_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.example.demo.model.OperationLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from operation_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from operation_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from operation_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.demo.model.OperationLogExample">
+    delete from operation_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.model.OperationLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into operation_log (operation_tag, operation_tag_id, operator, 
+      operator_id, operate_time, operate_type, 
+      operation_matter, operation_content, 
+      before_operation_data, after_operation_data
+      )
+    values (#{operationTag,jdbcType=VARCHAR}, #{operationTagId,jdbcType=BIGINT}, #{operator,jdbcType=VARCHAR}, 
+      #{operatorId,jdbcType=BIGINT}, #{operateTime,jdbcType=TIMESTAMP}, #{operateType,jdbcType=INTEGER}, 
+      #{operationMatter,jdbcType=VARCHAR}, #{operationContent,jdbcType=LONGVARCHAR}, 
+      #{beforeOperationData,jdbcType=LONGVARCHAR}, #{afterOperationData,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.model.OperationLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into operation_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operationTag != null">
+        operation_tag,
+      </if>
+      <if test="operationTagId != null">
+        operation_tag_id,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="operatorId != null">
+        operator_id,
+      </if>
+      <if test="operateTime != null">
+        operate_time,
+      </if>
+      <if test="operateType != null">
+        operate_type,
+      </if>
+      <if test="operationMatter != null">
+        operation_matter,
+      </if>
+      <if test="operationContent != null">
+        operation_content,
+      </if>
+      <if test="beforeOperationData != null">
+        before_operation_data,
+      </if>
+      <if test="afterOperationData != null">
+        after_operation_data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="operationTag != null">
+        #{operationTag,jdbcType=VARCHAR},
+      </if>
+      <if test="operationTagId != null">
+        #{operationTagId,jdbcType=BIGINT},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorId != null">
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="operateTime != null">
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateType != null">
+        #{operateType,jdbcType=INTEGER},
+      </if>
+      <if test="operationMatter != null">
+        #{operationMatter,jdbcType=VARCHAR},
+      </if>
+      <if test="operationContent != null">
+        #{operationContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="beforeOperationData != null">
+        #{beforeOperationData,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="afterOperationData != null">
+        #{afterOperationData,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.demo.model.OperationLogExample" resultType="java.lang.Long">
+    select count(*) from operation_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update operation_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.operationTag != null">
+        operation_tag = #{record.operationTag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationTagId != null">
+        operation_tag_id = #{record.operationTagId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operator != null">
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatorId != null">
+        operator_id = #{record.operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateTime != null">
+        operate_time = #{record.operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operateType != null">
+        operate_type = #{record.operateType,jdbcType=INTEGER},
+      </if>
+      <if test="record.operationMatter != null">
+        operation_matter = #{record.operationMatter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationContent != null">
+        operation_content = #{record.operationContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.beforeOperationData != null">
+        before_operation_data = #{record.beforeOperationData,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.afterOperationData != null">
+        after_operation_data = #{record.afterOperationData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update operation_log
+    set id = #{record.id,jdbcType=BIGINT},
+      operation_tag = #{record.operationTag,jdbcType=VARCHAR},
+      operation_tag_id = #{record.operationTagId,jdbcType=BIGINT},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      operator_id = #{record.operatorId,jdbcType=BIGINT},
+      operate_time = #{record.operateTime,jdbcType=TIMESTAMP},
+      operate_type = #{record.operateType,jdbcType=INTEGER},
+      operation_matter = #{record.operationMatter,jdbcType=VARCHAR},
+      operation_content = #{record.operationContent,jdbcType=LONGVARCHAR},
+      before_operation_data = #{record.beforeOperationData,jdbcType=LONGVARCHAR},
+      after_operation_data = #{record.afterOperationData,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update operation_log
+    set id = #{record.id,jdbcType=BIGINT},
+      operation_tag = #{record.operationTag,jdbcType=VARCHAR},
+      operation_tag_id = #{record.operationTagId,jdbcType=BIGINT},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      operator_id = #{record.operatorId,jdbcType=BIGINT},
+      operate_time = #{record.operateTime,jdbcType=TIMESTAMP},
+      operate_type = #{record.operateType,jdbcType=INTEGER},
+      operation_matter = #{record.operationMatter,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.model.OperationLog">
+    update operation_log
+    <set>
+      <if test="operationTag != null">
+        operation_tag = #{operationTag,jdbcType=VARCHAR},
+      </if>
+      <if test="operationTagId != null">
+        operation_tag_id = #{operationTagId,jdbcType=BIGINT},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorId != null">
+        operator_id = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateType != null">
+        operate_type = #{operateType,jdbcType=INTEGER},
+      </if>
+      <if test="operationMatter != null">
+        operation_matter = #{operationMatter,jdbcType=VARCHAR},
+      </if>
+      <if test="operationContent != null">
+        operation_content = #{operationContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="beforeOperationData != null">
+        before_operation_data = #{beforeOperationData,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="afterOperationData != null">
+        after_operation_data = #{afterOperationData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.demo.model.OperationLog">
+    update operation_log
+    set operation_tag = #{operationTag,jdbcType=VARCHAR},
+      operation_tag_id = #{operationTagId,jdbcType=BIGINT},
+      operator = #{operator,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operate_type = #{operateType,jdbcType=INTEGER},
+      operation_matter = #{operationMatter,jdbcType=VARCHAR},
+      operation_content = #{operationContent,jdbcType=LONGVARCHAR},
+      before_operation_data = #{beforeOperationData,jdbcType=LONGVARCHAR},
+      after_operation_data = #{afterOperationData,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.model.OperationLog">
+    update operation_log
+    set operation_tag = #{operationTag,jdbcType=VARCHAR},
+      operation_tag_id = #{operationTagId,jdbcType=BIGINT},
+      operator = #{operator,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=BIGINT},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operate_type = #{operateType,jdbcType=INTEGER},
+      operation_matter = #{operationMatter,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
